@@ -1,98 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 90vh;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  position: fixed;
-  font-family: sans-serif;
-  text-align: center;
-}
-.container img{
-  max-width: 1000cm;
-  width: 2500;
-}
-#picture {
-  z-index: 10;
-}
-#mydiv {
-  position: absolute;
-  z-index: 9;
-  background-color: #f1f1f1;
-  text-align: center;
-  border: 1px solid #d3d3d3;
-}
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            position: fixed;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        
+        .container img {
+            max-width: 1000cm;
+            width: 2500;
+        }
+        
+        #picture {
+            z-index: 10;
+        }
+        
+        #mydiv {
+            position: absolute;
+            z-index: 9;
+            background-color: #f1f1f1;
+            text-align: center;
+            border: 1px solid #d3d3d3;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div id="mydiv">
-        <img src="http://f.ptcdn.info/688/008/000/1377075438-MapTHprovi-o.png " id="picture">
+            <img src="http://f.ptcdn.info/688/008/000/1377075438-MapTHprovi-o.png " id="picture">
         </div>
     </div>
-<script>const zoomScreen = document.querySelector(".container");
-  let zoom = 1;
-  const zoomingSpeed = 0.1;
-  
-  document.addEventListener("wheel", (e)=> {
-      if (e.deltaY < 0) {
-          zoomScreen.style.transform = `scale(${(zoom += zoomingSpeed)})`;
-      } else if (zoom >= 1) {
-          zoomScreen.style.transform = `scale(${(zoom -= zoomingSpeed)})`;
-      }
-  }) 
-      //Make the DIV element draggagle:
-dragElement(document.getElementById("mydiv"));
+    <script>
+        const zoomScreen = document.querySelector(".container");
+        let zoom = 1;
+        const zoomingSpeed = 0.5;
 
-function dragElement(elmnt) {
-var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-if (document.getElementById(elmnt.id + "header")) {
-/* if present, the header is where you move the DIV from:*/
-document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-} else {
-/* otherwise, move the DIV from anywhere inside the DIV:*/
-elmnt.onmousedown = dragMouseDown;
-}
+        document.addEventListener("wheel", (e) => {
+            if (e.deltaY < 0) {
+                zoomScreen.style.transform = `scale(${(zoom += zoomingSpeed)})`;
+                console.log('zm in detected');
+            } else if (zoom >= 1) {
+                zoomScreen.style.transform = `scale(${(zoom -= zoomingSpeed)})`;
+                console.log('zm out detected')
+            }
+        })
+        document.addEventListener("touchmove", (e) => {
+                if (e.deltaY < 0) {
+                    zoomScreen.style.transform = `scale(${(zoom += zoomingSpeed)})`;
+                    console.log('zm in detected');
+                } else if (zoom >= 1) {
+                    zoomScreen.style.transform = `scale(${(zoom -= zoomingSpeed)})`;
+                    console.log('zm out detected')
+                }
+            })
+            //Make the DIV element draggagle:
+        dragElement(document.getElementById("mydiv"));
 
-function dragMouseDown(e) {
-e = e || window.event;
-e.preventDefault();
-// get the mouse cursor position at startup:
-pos3 = e.clientX;
-pos4 = e.clientY;
-document.onmouseup = closeDragElement;
-// call a function whenever the cursor moves:
-document.onmousemove = elementDrag;
-}
+        function dragElement(elmnt) {
+            var pos1 = 0,
+                pos2 = 0,
+                pos3 = 0,
+                pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                /* if present, the header is where you move the DIV from:*/
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+                console.log('drag detected');
+            } else {
+                /* otherwise, move the DIV from anywhere inside the DIV:*/
+                elmnt.onmousedown = dragMouseDown;
+                console.log('drag detected');
+            }
 
-function elementDrag(e) {
-e = e || window.event;
-e.preventDefault();
-// calculate the new cursor position:
-pos1 = pos3 - e.clientX;
-pos2 = pos4 - e.clientY;
-pos3 = e.clientX;
-pos4 = e.clientY;
-// set the element's new position:
-elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-}
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+                console.log('drag detected');
+            }
 
-function closeDragElement() {
-/* stop moving when mouse button is released:*/
-document.onmouseup = null;
-document.onmousemove = null;
-}
-}</script>
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                console.log('drag detected');
+            }
+
+            function closeDragElement() {
+                /* stop moving when mouse button is released:*/
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+    </script>
 </body>
+
 </html>
